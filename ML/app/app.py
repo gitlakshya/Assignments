@@ -8,18 +8,22 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix
 import pickle
+import os
 
 
 @st.cache_resource
 def load_model():
-    with open("./credit_risk_model.pkl", "rb") as file:
+    path = os.path.join(os.path.dirname(__file__), "credit_risk_model.pkl")
+    with open(path, "rb") as file:
         loaded_model = pickle.load(file)
     return loaded_model
 
 # Load the dataset
 @st.cache_resource
 def load_data():
-    data = pd.read_csv('./credit_risk.csv')
+    data_path = os.path.join(os.path.dirname(__file__), "credit_risk.csv")
+    with open(data_path, "rb") as data_file:
+        data = pd.read_csv(data_file)
     return data
 
 

@@ -12,14 +12,14 @@ import pickle
 
 @st.cache_resource
 def load_model():
-    with open("credit_risk_model.pkl", "rb") as file:
+    with open("./credit_risk_model.pkl", "rb") as file:
         loaded_model = pickle.load(file)
     return loaded_model
 
 # Load the dataset
 @st.cache_resource
 def load_data():
-    data = pd.read_csv('credit_risk.csv')
+    data = pd.read_csv('./credit_risk.csv')
     return data
 
 

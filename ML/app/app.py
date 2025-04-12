@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import joblib
 import streamlit as st
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -13,14 +12,14 @@ import pickle
 
 @st.cache_resource
 def load_model():
-    with open("C:/Users/lakshya.vashisth/Documents/Assignments/ML/app/credit_risk_model.pkl", "rb") as file:
+    with open("credit_risk_model.pkl", "rb") as file:
         loaded_model = pickle.load(file)
     return loaded_model
 
 # Load the dataset
 @st.cache_resource
 def load_data():
-    data = pd.read_csv('C:/Users/lakshya.vashisth/Documents/Assignments/ML/app/credit_risk.csv')
+    data = pd.read_csv('credit_risk.csv')
     return data
 
 

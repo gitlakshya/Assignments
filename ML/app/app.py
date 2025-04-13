@@ -8,18 +8,22 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix
 import pickle
+import os
 
 
 @st.cache_resource
 def load_model():
-    with open("credit_risk_model.pkl", "rb") as file:
+    path = os.path.join(os.path.dirname(__file__), "credit_risk_model.pkl")
+    with open(path, "rb") as file:
         loaded_model = pickle.load(file)
     return loaded_model
 
 # Load the dataset
 @st.cache_resource
 def load_data():
-    data = pd.read_csv('credit_risk.csv')
+    data_path = os.path.join(os.path.dirname(__file__), "credit_risk.csv")
+    with open(data_path, "rb") as data_file:
+        data = pd.read_csv(data_file)
     return data
 
 
@@ -101,58 +105,6 @@ if option == "Home - Credit Risk Prediction":
             st.write("**Probability of High Risk:**", round(prediction_proba[0][1],4))
 
 elif option == "Data Analysis":
-
-#     st.title("Data Analysis")
-
-# if 'prediction_data' in st.session_state and st.session_state.get('predicted', False):
-#     data = st.session_state['prediction_data']
-#     df = pd.DataFrame([data]) # Create a DataFrame for easier plotting
-
-#     st.subheader("Input Data")
-#     st.write(df)
-
-#     st.subheader("Data Visualization")
-
-#         # Example 1: Bar chart of numerical features
-#     numerical_cols = ['Age', 'Income', 'Employment Length (years)']
-#     if numerical_cols:
-#         df_numerical = df[numerical_cols].melt(var_name='Feature', value_name='Value')
-#         fig_bar, ax_bar = plt.subplots()
-#         sns.barplot(x='Feature', y='Value', data=df_numerical, ax=ax_bar)
-#         plt.title('Applicant Numerical Features')
-#         st.pyplot(fig_bar)
-
-#         # Example 2: Count plot of categorical features
-#     categorical_cols = ['Purpose', 'Education', 'Home Ownership status']
-#     for col in categorical_cols:
-#         fig_count, ax_count = plt.subplots()
-#         sns.countplot(x=col, data=df, ax=ax_count)
-#         plt.title(f'Applicant {col} Distribution')
-#         st.pyplot(fig_count)
-
-#         # You can add more sophisticated analysis and visualizations here
-#         # Potentially using the prediction result if you stored it in session state
-
-# else:
-#     st.info("No prediction data available yet. Please go back to the Home page and click Predict.")
-        
-
-
-
-# Preprocess the data
-    # def preprocess_data(data):
-    #     # Handle missing values, encode categorical variables, etc.
-    #     data.fillna(data.mean(), inplace=True)
-    #     data = pd.get_dummies(data, drop_first=True)
-    #     return data
-
-    # Feature Importance
-    # def feature_importance(X, y):
-    #     model = RandomForestClassifier()
-    #     model.fit(X, y)
-    #     importance = model.feature_importances_
-    #     return importance
-
     
     st.title("Credit Risk Analysis")
 

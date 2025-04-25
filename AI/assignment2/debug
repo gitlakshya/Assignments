@@ -1,0 +1,96 @@
+# simulated Annealing
+import math
+import copy
+import random
+#random.seed(42)
+
+def display_board(state):
+    n = len(state)
+    for row in range(n):
+        line = ""
+        for col in range(n):
+            if state[col] == row:
+                line += " Q "
+            else:
+                line += " . "
+        print(line)
+    print("-" * (n * 3))
+
+def calc_conflicts(state):
+    conflicts=0
+    for i in range(len(state)):
+        for j in range(i+1, len(state)):
+            if state[i] == state[j] or abs(i-j) == abs(state[i] - state[j]):
+                conflicts += 1
+    return conflicts
+
+
+def n_queens_simulated_annealing(state):
+    current_state = state
+    #random.shuffle(current_state)
+    current_conflicts = calc_conflicts(current_state)
+
+    temp = 1.0
+    cooling_rate = 0.95
+    iteration = 1
+
+    while temp > 1e-6 and current_conflicts > 0:
+        new_state = current_state.copy()
+        print("New state:")
+        display_board(new_state)
+        i, j = random.sample(range(8), 2)
+        new_state[i], new_state[j] = new_state[j], new_state[i]
+        new_conflicts = calc_conflicts(new_state)
+
+        delta = new_conflicts - current_conflicts
+        prob = math.exp(-delta/temp)
+        if delta < 0 or random.random() < prob:
+            current_state = new_state
+            current_conflicts = new_conflicts
+
+        print(f"Iteration: {iteration}, Temp: {temp: .6f}, Energy/Conflicts: {current_conflicts}")
+        display_board(current_state)
+
+        temp *= cooling_rate
+        iteration += 1
+    return current_state, current_conflicts, iteration
+
+def n_queens_sa_to_hc(state):
+    current_state = state
+    random.shuffle(current_state)
+    current_conflicts = calc_conflicts(current_state)
+
+    temp = 1.0
+    cooling_rate = 0.95
+    iteration = 1
+
+    while temp > 1e-6 and current_conflicts > 0:
+        new_state = current_state.copy()
+        print("New state:")
+        display_board(new_state)
+        i, j = random.sample(range(8), 2)
+        new_state[i], new_state[j] = new_state[j], new_state[i]
+        new_conflicts = calc_conflicts(new_state)
+
+        delta = new_conflicts - current_conflicts
+        
+        if delta < 0 or random.random() < math.exp(-delta/temp):
+            current_state = new_state
+            current_conflicts = new_conflicts
+
+        print(f"Iteration: {iteration}, Temp: {temp: .6f}, Energy/Conflicts: {current_conflicts}")
+        display_board(current_state)
+
+        temp *= cooling_rate
+        iteration += 1
+    return current_state, current_conflicts, iteration
+
+print("Starting configuration:")
+initial_state = [6, 3, 4, 2, 0, 7, 5, 1]
+display_board(initial_state)
+
+solution, energy, steps = n_queens_simulated_annealing(initial_state)
+print(f"\nSolution found in {steps} steps")
+print(f"Final energy: {energy}")
+print("Final solution state/board")
+display_board(solution)
